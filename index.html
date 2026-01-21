@@ -1,10 +1,4 @@
 <div class="resultado">
-  <div>Contrato: <span id="ativo">NASDAQ</span></div>
-  <div>Valor da Operação (USD): <span class="valor" id="usd">$ 0.00</span></div>
-  <div>Taxa de Câmbio Atual: <span id="cambio">--</span></div>
-  <div>Valor Convertido (R$): <span class="valor" id="brl">R$ 0.00</span></div>
-</div>
-<div class="resultado">
   <div class="card info">
     <span class="label">Contrato</span>
     <span class="value">NASDAQ</span>
@@ -25,64 +19,3 @@
     <span class="value" id="brl">R$ 0.00</span>
   </div>
 </div>
-<div class="resultado">
-  <div class="card info">
-    <span class="label">Contrato</span>
-    <span class="value">NASDAQ</span>
-  </div>
-
-  <div class="card usd">
-    <span class="label">Valor da Operação (USD)</span>
-    <span class="value" id="usd">$ 0.00</span>
-  </div>
-
-  <div class="card cambio">
-    <span class="label">Taxa de Câmbio</span>
-    <span class="value" id="cambio">--</span>
-  </div>
-
-  <div class="card brl">
-    <span class="label">Valor Convertido (R$)</span>
-    <span class="value" id="brl">R$ 0.00</span>
-  </div>
-</div>
-.resultado {
-  margin-top: 25px;
-  display: grid;
-  gap: 12px;
-}
-
-.card {
-  padding: 12px 14px;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.card .label {
-  font-size: 13px;
-  opacity: 0.75;
-}
-
-.card .value {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-/* Cores por tipo */
-.card.info {
-  background: #2f2f2f;
-}
-
-.card.usd {
-  background: linear-gradient(135deg, #1e3a8a, #1e40af);
-}
-
-.card.cambio {
-  background: linear-gradient(135deg, #7c2d12, #9a3412);
-}
-
-.card.brl {
-  background: linear-gradient(135deg, #065f46, #047857);
-}
