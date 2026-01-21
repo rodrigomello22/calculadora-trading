@@ -71,21 +71,10 @@
       font-weight: bold;
     }
 
-    .info {
-      background: #2f2f2f;
-    }
-
-    .usd {
-      background: linear-gradient(135deg, #1e3a8a, #1e40af);
-    }
-
-    .cambio {
-      background: linear-gradient(135deg, #7c2d12, #9a3412);
-    }
-
-    .brl {
-      background: linear-gradient(135deg, #065f46, #047857);
-    }
+    .info { background: #2f2f2f; }
+    .usd { background: linear-gradient(135deg, #1e3a8a, #1e40af); }
+    .cambio { background: linear-gradient(135deg, #7c2d12, #9a3412); }
+    .brl { background: linear-gradient(135deg, #065f46, #047857); }
   </style>
 </head>
 
@@ -133,15 +122,11 @@
     let cotacaoUSD = 0;
 
     async function buscarDolar() {
-      try {
-        const res = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL");
-        const data = await res.json();
-        cotacaoUSD = parseFloat(data.USDBRL.bid);
-        document.getElementById("cambio").innerText = "R$ " + cotacaoUSD.toFixed(2);
-        calcular();
-      } catch {
-        document.getElementById("cambio").innerText = "Erro";
-      }
+      const res = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL");
+      const data = await res.json();
+      cotacaoUSD = parseFloat(data.USDBRL.bid);
+      document.getElementById("cambio").innerText = "R$ " + cotacaoUSD.toFixed(2);
+      calcular();
     }
 
     function valorPonto() {
