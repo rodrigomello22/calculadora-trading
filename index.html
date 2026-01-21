@@ -6,19 +6,19 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
+      background: #0b0b0b;
+      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
     .box {
-      background: #020617;
-      padding: 25px;
-      border-radius: 10px;
-      width: 320px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      background: linear-gradient(145deg, #2b2b2b, #1f1f1f);
+      padding: 30px;
+      border-radius: 15px;
+      width: 360px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.8);
     }
     h2 {
       text-align: center;
@@ -26,71 +26,93 @@
     }
     label {
       display: block;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-    select, input, button {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: none;
-      font-size: 14px;
-    }
-    button {
       margin-top: 15px;
-      background: #22c55e;
-      color: #020617;
-      font-weight: bold;
-      cursor: pointer;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: none;
+      background: #444;
+      color: #fff;
+      font-size: 15px;
     }
     .resultado {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 18px;
+      margin-top: 25px;
+      background: #3a3a3a;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .valor {
       font-weight: bold;
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
 
-  <div class="box">
-    <h2>Calculadora NASDAQ</h2>
+<div class="box">
+  <h2>Calculadora de Trading</h2>
 
-    <label>Contrato</label>
-    <select id="contrato">
-      <option value="MNQ">Micro Nasdaq (MNQ)</option>
-      <option value="NQ">Mini Nasdaq (NQ)</option>
-    </select>
+  <label>Contrato</label>
+  <select id="contrato">
+    <option value="MNQ">NASDAQ Micro (MNQ)</option>
+    <option value="NQ">NASDAQ Mini (NQ)</option>
+  </select>
 
-    <label>Quantidade de contratos</label>
-    <input type="number" id="lote" placeholder="Ex: 2">
+  <label>Lote</label>
+  <input type="number" id="lote" value="1">
 
-    <label>Pontos</label>
-    <input type="number" id="pontos" placeholder="Ex: 10">
+  <label>Pontos</label>
+  <input type="number" id="pontos" value="20">
 
-    <button onclick="calcular()">Calcular</button>
-
-    <div class="resultado" id="resultado">$ 0.00</div>
+  <div class="resultado">
+    <div>Contrato: <span id="ativo">NASDAQ</span></div>
+    <div>Valor da Operação (USD): <span class="valor" id="usd">$ 0.00</span></div>
+    <div>Taxa de Câmbio Atual: <span id="cambio">--</span></div>
+    <div>Valor Convertido (R$): <span class="valor" id="brl">R$ 0.00</span></div>
   </div>
+</div>
 
-  <script>
-    function valorPonto() {
-      const contrato = document.getElementById("contrato").value;
-      return contrato === "MNQ" ? 2 : 20;
+<script>
+  let cotacaoUSD = 0;
+
+  async function buscarDolar() {
+    try {
+      const res = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL");
+      const data = await res.json();
+      cotacaoUSD = parseFloat(data.USDBRL.bid);
+      document.getElementById("cambio").innerText = `R$ ${cotacaoUSD.toFixed(2)}`;
+      calcular();
+    } catch (e) {
+      document.getElementById("cambio").innerText = "Erro ao buscar dólar";
     }
+  }
 
-    function calcular() {
-      const contratos = Number(document.getElementById("lote").value);
-      const pontos = Number(document.getElementById("pontos").value);
-      const valor = valorPonto();
+  function valorPonto() {
+    return document.getElementById("contrato").value === "MNQ" ? 2 : 20;
+  }
 
-      const resultado = contratos * pontos * valor;
+  function calcular() {
+    const lote = Number(document.getElementById("lote").value);
+    const pontos = Number(document.getElementById("pontos").value);
+    const usd = lote * pontos * valorPonto();
+    const brl = usd * cotacaoUSD;
 
-      document.getElementById("resultado").innerText =
-        `$ ${resultado.toFixed(2)}`;
-    }
-  </script>
+    document.getElementById("usd").innerText = `$ ${usd.toFixed(2)}`;
+    document.getElementById("brl").innerText = `R$ ${brl.toFixed(2)}`;
+  }
+
+  document.querySelectorAll("input, select")
+    .forEach(el => el.addEventListener("input", calcular));
+
+  buscarDolar();
+</script>
 
 </body>
 </html>
