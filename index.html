@@ -1,118 +1,40 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Calculadora NASDAQ</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0b0b0b;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .box {
-      background: linear-gradient(145deg, #2b2b2b, #1f1f1f);
-      padding: 30px;
-      border-radius: 15px;
-      width: 360px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.8);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-size: 14px;
-      opacity: 0.9;
-    }
-    select, input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: none;
-      background: #444;
-      color: #fff;
-      font-size: 15px;
-    }
-    .resultado {
-      margin-top: 25px;
-      background: #3a3a3a;
-      padding: 15px;
-      border-radius: 10px;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-    .valor {
-      font-weight: bold;
-      font-size: 18px;
-    }
-  </style>
-</head>
-<body>
+.resultado {
+  margin-top: 25px;
+  display: grid;
+  gap: 12px;
+}
 
-<div class="box">
-  <h2>Calculadora de Trading</h2>
+.card {
+  padding: 12px 14px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  <label>Contrato</label>
-  <select id="contrato">
-    <option value="MNQ">NASDAQ Micro (MNQ)</option>
-    <option value="NQ">NASDAQ Mini (NQ)</option>
-  </select>
+.card .label {
+  font-size: 13px;
+  opacity: 0.75;
+}
 
-  <label>Lote</label>
-  <input type="number" id="lote" value="1">
+.card .value {
+  font-size: 18px;
+  font-weight: bold;
+}
 
-  <label>Pontos</label>
-  <input type="number" id="pontos" value="20">
+/* Cores por tipo */
+.card.info {
+  background: #2f2f2f;
+}
 
-  <div class="resultado">
-    <div>Contrato: <span id="ativo">NASDAQ</span></div>
-    <div>Valor da Operação (USD): <span class="valor" id="usd">$ 0.00</span></div>
-    <div>Taxa de Câmbio Atual: <span id="cambio">--</span></div>
-    <div>Valor Convertido (R$): <span class="valor" id="brl">R$ 0.00</span></div>
-  </div>
-</div>
+.card.usd {
+  background: linear-gradient(135deg, #1e3a8a, #1e40af);
+}
 
-<script>
-  let cotacaoUSD = 0;
+.card.cambio {
+  background: linear-gradient(135deg, #7c2d12, #9a3412);
+}
 
-  async function buscarDolar() {
-    try {
-      const res = await fetch("https://economia.awesomeapi.com.br/json/last/USD-BRL");
-      const data = await res.json();
-      cotacaoUSD = parseFloat(data.USDBRL.bid);
-      document.getElementById("cambio").innerText = `R$ ${cotacaoUSD.toFixed(2)}`;
-      calcular();
-    } catch (e) {
-      document.getElementById("cambio").innerText = "Erro ao buscar dólar";
-    }
-  }
-
-  function valorPonto() {
-    return document.getElementById("contrato").value === "MNQ" ? 2 : 20;
-  }
-
-  function calcular() {
-    const lote = Number(document.getElementById("lote").value);
-    const pontos = Number(document.getElementById("pontos").value);
-    const usd = lote * pontos * valorPonto();
-    const brl = usd * cotacaoUSD;
-
-    document.getElementById("usd").innerText = `$ ${usd.toFixed(2)}`;
-    document.getElementById("brl").innerText = `R$ ${brl.toFixed(2)}`;
-  }
-
-  document.querySelectorAll("input, select")
-    .forEach(el => el.addEventListener("input", calcular));
-
-  buscarDolar();
-</script>
-
-</body>
-</html>
+.card.brl {
+  background: linear-gradient(135deg, #065f46, #047857);
+}
